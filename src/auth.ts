@@ -13,13 +13,13 @@ export const lucia = new Lucia(adapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  getSessionAttributes(databaseUserAttributes) {
+  getUserAttributes(databaseUserAttributes) {
     return {
-      id: databaseUserAttributes,
-      username: databaseUserAttributes,
-      displayName: databaseUserAttributes,
-      avatarUrl: databaseUserAttributes,
-      googleId: databaseUserAttributes,
+      id: databaseUserAttributes.id,
+      username: databaseUserAttributes.username,
+      displayName: databaseUserAttributes.displayName,
+      avatarUrl: databaseUserAttributes.avatarUrl,
+      googleId: databaseUserAttributes.googleId,
     };
   },
 });

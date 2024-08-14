@@ -1,12 +1,13 @@
 import { z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
+
 export const signUpSchema = z.object({
   // email: z.string().trim().min(1, "Required")
-  email: requiredString.email("invalid email address"),
+  email: requiredString.email("Invalid email address"),
   username: requiredString.regex(
     /^[a-zA-z0-9_-]+$/,
-    "only letters, numbers, -and_allowed",
+    "Only letters, numbers, - and _ are allowed",
   ),
   password: requiredString.min(8, "Must be at least 8 characters"),
 });
