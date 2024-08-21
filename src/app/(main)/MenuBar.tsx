@@ -11,7 +11,7 @@ export default function MenuBar({ className }: MenuBarProps) {
     <div className={className}>
       <Button
         variant="ghost"
-        className="flex items-center justify-center gap-3"
+        className="flex items-center justify-start gap-3"
         title="Home"
         asChild
       >
@@ -22,7 +22,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       </Button>
       <Button
         variant="ghost"
-        className="flex items-center justify-center gap-3"
+        className="flex items-center justify-start gap-3"
         title="Notifications"
         asChild
       >
@@ -33,7 +33,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       </Button>
       <Button
         variant="ghost"
-        className="flex items-center justify-center gap-3"
+        className="flex items-center justify-start gap-3"
         title="Messages"
         asChild
       >
@@ -44,7 +44,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       </Button>
       <Button
         variant="ghost"
-        className="flex items-center justify-center gap-3"
+        className="flex items-center justify-start gap-3"
         title="Bookmarks"
         asChild
       >
