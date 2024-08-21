@@ -7,7 +7,7 @@ import { postDataInclude } from "@/lib/types";
 export default async function Home() {
   const posts = await prisma.post.findMany({
     include: postDataInclude,
-    orderBy: { createAt: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 
   return (

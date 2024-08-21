@@ -6,13 +6,12 @@ import { Suspense } from "react";
 import UserAvator from "./UserAvator";
 import { Button } from "./ui/button";
 import { unstable_cache } from "next/cache";
-// import { count } from "console";
 import { formatNumber } from "@/lib/utils";
 import Link from "next/link";
 
 export default function TrendsSidebar() {
   return (
-    <div className="top-[5.25rem], sticky hidden h-fit w-72 flex-none space-y-5 md:block lg:w-80">
+    <div className="sticky top-[5.25rem] hidden h-fit w-72 flex-none space-y-5 md:block lg:w-80">
       <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
         <WhoToFollow />
         <TrendingTopics />
@@ -65,12 +64,12 @@ async function WhoToFollow() {
 const getTrendingTopics = unstable_cache(
   async () => {
     const result = await prisma.$queryRaw<{ hashtag: string; count: bigint }[]>`
-              SELECT LOWER(unnest(regexp_matches(content, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
-              FROM posts
-              GROUP BY (hashtag)
-              ORDER BY count DESC, hashtag ASC
-              LIMIT 5
-          `;
+            SELECT LOWER(unnest(regexp_matches(content, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
+            FROM posts
+            GROUP BY (hashtag)
+            ORDER BY count DESC, hashtag ASC
+            LIMIT 5
+        `;
 
     return result.map((row) => ({
       hashtag: row.hashtag,
@@ -90,7 +89,7 @@ async function TrendingTopics() {
     <div className="space-y-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="text-xl font-bold">Trending topics</div>
       {trendingTopics.map(({ hashtag, count }) => {
-        const title = hashtag.split("#")[5];
+        const title = hashtag.split("#")[1];
 
         return (
           <Link key={title} href={`/hashtag/${title}`} className="block">

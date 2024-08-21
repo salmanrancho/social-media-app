@@ -43,6 +43,7 @@ export async function signUp(
     const existingEmail = await prisma.user.findFirst({
       where: {
         email: {
+          equals: email,
           mode: "insensitive",
         },
       },
