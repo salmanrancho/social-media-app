@@ -17,7 +17,7 @@ export type PostData = Prisma.PostGetPayload<{
   include: typeof postDataInclude;
 }>;
 
-export interface PostPage {
+export interface PostsPage {
   posts: PostData[];
   nextCursor: string | null;
 }
