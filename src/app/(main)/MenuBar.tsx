@@ -50,7 +50,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       >
         <Link href="/bookmarks">
           <Bookmark />
-          <span className="hidden lg:inline">Booknarks</span>
+          <span className="hidden lg:inline">Bookmarks</span>
         </Link>
       </Button>
     </div>
