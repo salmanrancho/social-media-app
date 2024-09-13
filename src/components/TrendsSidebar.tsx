@@ -1,15 +1,14 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { Loader2 } from "lucide-react";
-import { Suspense } from "react";
-import UserAvator from "./UserAvator";
-import { Button } from "./ui/button";
-import { unstable_cache } from "next/cache";
-import { formatNumber } from "@/lib/utils";
-import Link from "next/link";
-import FollowButon from "./FollowButton";
 import { getUserDataSelect } from "@/lib/types";
+import { formatNumber } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Suspense } from "react";
 import UserTooltip from "./UserTooltip";
+import UserAvator from "./UserAvator";
+import FollowButon from "./FollowButton";
+import FollowButton from "./FollowButton";
 
 export default function TrendsSidebar() {
   return (
@@ -38,65 +37,66 @@ async function WhoToFollow() {
       },
     },
     select: getUserDataSelect(user.id),
-    take: 5,
+    take: 5, // Ensure enough users to overflow
   });
 
   return (
     <div className="space-y-5 rounded-2xl bg-card p-5 shadow-sm">
-      <div className="text-xl font-bold">who to follow</div>
-      {usersToFollow.map((user) => (
-        <div key={user.id} className="flex items-center justify-between gap-3">
-          <UserTooltip user={user}>
-            <Link
-              href={`/users/${user.username}`}
-              className="flex items-center gap-3"
-            >
-              <UserAvator avatarUrl={user.avatarUrl} className="flex-none" />
-              <div>
-                <p className="line-clamp-1 break-all font-semibold hover:underline">
-                  {user.displayName}
-                </p>
-                <p className="line-clamp-1 break-all text-muted-foreground">
-                  @{user.username}
-                </p>
-              </div>
-            </Link>
-          </UserTooltip>
-          <FollowButon
-            userId={user.id}
-            initialState={{
-              followers: user._count.followers,
-              isFollowedByUser: user.followers.some(
-                ({ followerId }) => followerId === user.id,
-              ),
-            }}
-          />
-        </div>
-      ))}
+      <div className="text-xl font-bold">Who to follow</div>
+
+      {/* Scrollable container for the list of users */}
+      <div className="scrollable-container h-64 space-y-3">
+        {usersToFollow.map((user) => (
+          <div
+            key={user.id}
+            className="flex items-center justify-between gap-3"
+          >
+            <UserTooltip user={user}>
+              <Link
+                href={`/users/${user.username}`}
+                className="flex items-center gap-3"
+              >
+                <UserAvator avatarUrl={user.avatarUrl} className="flex-none" />
+                <div>
+                  <p className="line-clamp-1 break-all font-semibold hover:underline">
+                    {user.displayName}
+                  </p>
+                  <p className="line-clamp-1 break-all text-muted-foreground">
+                    @{user.username}
+                  </p>
+                </div>
+              </Link>
+            </UserTooltip>
+            <FollowButton
+              userId={user.id}
+              initialState={{
+                followers: user._count.followers,
+                isFollowedByUser: user.followers.some(
+                  ({ followerId }) => followerId === user.id,
+                ),
+              }}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-const getTrendingTopics = unstable_cache(
-  async () => {
-    const result = await prisma.$queryRaw<{ hashtag: string; count: bigint }[]>`
-            SELECT LOWER(unnest(regexp_matches(content, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
-            FROM posts
-            GROUP BY (hashtag)
-            ORDER BY count DESC, hashtag ASC
-            LIMIT 5
-        `;
+const getTrendingTopics = async () => {
+  const result = await prisma.$queryRaw<{ hashtag: string; count: bigint }[]>`
+          SELECT LOWER(unnest(regexp_matches(content, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
+          FROM posts
+          GROUP BY (hashtag)
+          ORDER BY count DESC, hashtag ASC
+          LIMIT 5
+      `;
 
-    return result.map((row) => ({
-      hashtag: row.hashtag,
-      count: Number(row.count),
-    }));
-  },
-  ["trending_topics"],
-  {
-    revalidate: 3 * 60 * 60,
-  },
-);
+  return result.map((row) => ({
+    hashtag: row.hashtag,
+    count: Number(row.count),
+  }));
+};
 
 async function TrendingTopics() {
   const trendingTopics = await getTrendingTopics();
