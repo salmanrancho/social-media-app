@@ -37,7 +37,7 @@ async function WhoToFollow() {
       },
     },
     select: getUserDataSelect(user.id),
-    take: 5, // Ensure enough users to overflow
+    take: 20, // Ensure enough users to overflow
   });
 
   return (
