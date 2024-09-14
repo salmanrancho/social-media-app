@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | instaFlick",
     default: "instaFlick",
   },
-  description: "the social media app like insta and fb",
+  description: "the social media app like insta and twitter",
 };
 
 export default function RootLayout({

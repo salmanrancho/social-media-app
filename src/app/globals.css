@@ -101,21 +101,9 @@
   display: none;
 }
 
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hidden {
-  scrollbar-width: none;
-}
-
-.scrollbar-hidden {
-  -ms-overflow-style: none;
-}
-
 .scrollable-container {
-  scroll-behavior: smooth;
-  overflow-y: auto;
+  max-height: calc(4 * 4rem);
+  overflow-y: scroll;
 }
 
 .scrollable-container::-webkit-scrollbar {
@@ -123,9 +111,6 @@
 }
 
 .scrollable-container {
-  scrollbar-width: none;
-}
-
-.scrollable-container {
   -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import UserTooltip from "./UserTooltip";
 import UserAvator from "./UserAvator";
-import FollowButon from "./FollowButton";
 import FollowButton from "./FollowButton";
 
 export default function TrendsSidebar() {
@@ -37,19 +36,18 @@ async function WhoToFollow() {
       },
     },
     select: getUserDataSelect(user.id),
-    take: 20, // Ensure enough users to overflow
+    take: 20,
   });
 
   return (
     <div className="space-y-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="text-xl font-bold">Who to follow</div>
 
-      {/* Scrollable container for the list of users */}
-      <div className="scrollable-container h-64 space-y-3">
+      <div className="scrollable-container space-y-3">
         {usersToFollow.map((user) => (
           <div
             key={user.id}
-            className="flex items-center justify-between gap-3"
+            className="flex h-16 items-center justify-between gap-3"
           >
             <UserTooltip user={user}>
               <Link
